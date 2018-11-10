@@ -1,0 +1,9 @@
+export const LOGIN = 'login';
+export const LOGOUT = 'logout';
+export const FETCH_USER = 'fetch_user';
+export const ADD_USER = 'add_user';
+export const CHANGE_MESS = 'change_mess';
+export const CLEAR_MESS = 'clear_mess';
+export const CHOOSE_USER = 'choose_user';
+export const SEND_MESS = 'send_mess';
+export const ADD_MESS = 'add_mess';

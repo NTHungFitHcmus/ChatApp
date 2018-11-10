@@ -1,0 +1,108 @@
+.App {
+  text-align: center;
+	margin-top: 10%;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+body, html {	
+	background-color: #C5DDEB;
+}
+
+.BtnLogin {
+	font-size: 50px;
+	border-radius: 12px;
+	border: 2px solid #4CAF50;
+	transition-duration: 0.4s;
+	background-color: #CFEFCF; 
+  color: #4CAF50;
+	
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.BtnLogin:hover {
+  background-color: #4CAF50; /* Green */
+  color: white;
+	box-shadow: none;
+}
+
+.ContainerLogin {
+	padding: 40px;
+	margin-left:25%;
+	margin-right:25%;
+	border: 5px solid yellow;
+	border-radius: 25px;
+	background: #8C8CE2;
+}
+
+.HeadNav {
+	margin: 0;
+  padding: 10px;
+  overflow: hidden;
+	font-size: 40px;
+	color: white;
+  background-color: #4CAF50;
+}
+
+.avatar {
+	margin-top: 0px;
+	border-radius: 50%;
+	height: 50px;
+	float:left;
+}
+
+.WelcomeTitle {
+	margin: 15px;
+	float:left;
+}
+
+.BtnLogout {
+	float: right;
+	font-size: 30px;
+	border-radius: 12px;
+	border: 2px solid;
+	transition-duration: 0.4s;
+	background-color: lightblue; 
+  color: #4CAF50;
+	box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24), 0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+.BtnLogout:hover {
+  background-color: gray; 
+  color: white;
+	box-shadow: none;
+}
+
+
+
+
+
+
+
+
