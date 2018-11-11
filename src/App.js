@@ -15,7 +15,7 @@ export const history = createHistory();
 class App extends Component {
 	componentWillMount() {
 		const {dispatch} = this.props; 
-    dispatch(fetchUser());
+    //dispatch(fetchUser());
 		console.log('check');
   }
 	

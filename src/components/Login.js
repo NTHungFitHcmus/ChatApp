@@ -1,17 +1,19 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux';
 import {firebaseLogin} from '../actions/auth';
-import firebase from 'firebase';
+//import firebase from 'firebase';
 import {login, logout} from '../actions/auth';
 import '../App.css';
+import { firebaseConnect, isLoaded, isEmpty, getVal } from 'react-redux-firebase';
+import { compose } from 'redux';
 
-const mapStateToProps = (state) => {
-	console.log('login state ');
-	console.log(state);
-	return {
-		auth: state.auth
-	}
-}
+// const mapStateToProps = (state) => {
+	// console.log('login state ');
+	// console.log(state);
+	// return {
+		// auth: state.auth
+	// }
+// }
 
 class Login extends Component {
 	constructor(props){
@@ -19,10 +21,15 @@ class Login extends Component {
   };
 	
 	componentWillUpdate(nextProps) {
-    if (nextProps.auth) {
-			const {history} = this.props;
-			history.push("/dashboard");
-    }
+		const {history} = this.props;
+		console.log('props');
+		!isLoaded(nextProps.auth)
+		? console.log('loadingAuth')
+		: isEmpty(nextProps.auth)
+			? console.log('noAuth')
+			: 				
+				history.push("/dashboard");
+			
   }
 	
 	handleClick()
@@ -37,11 +44,20 @@ class Login extends Component {
 			<div className='App'>
 				<div className='ContainerLogin'>
 					<div><img src={require('../images/Untitled.png')}/></div>
-					<button className = 'BtnLogin' onClick = {this.handleClick.bind(this)}> Join us </button>
+					<button className = 'BtnLogin' onClick = {() => this.props.firebase.login({ provider: 'google', type: 'popup' })}> Join us </button>
 				</div>
 			</div>
 		);
 	}
 };
 
-export default connect(mapStateToProps)(Login);
+export default //connect(mapStateToProps)
+	compose(
+		firebaseConnect([
+			{ type:'child_added', path: '/users' }
+		]),
+		connect((state) => ({
+			auth: state.firebase.auth,
+			todos: state.firebase.data.users
+    }))
+	)(Login);
