@@ -9,6 +9,9 @@ import createHistory from 'history/createBrowserHistory';
 import {connect} from 'react-redux';
 import {fetchUser} from './actions/auth';
 import requireAuth from "./components/auth/requireAuth";
+import { firebaseConnect } from 'react-redux-firebase';
+import { compose } from 'redux';
+import config from './store';
 
 export const history = createHistory();
 
@@ -16,6 +19,16 @@ class App extends Component {
 	componentWillMount() {
 		const {dispatch} = this.props; 
     //dispatch(fetchUser());
+		// config.onAuthStateChanged(user => {
+			// if (user) {
+				// this.props.set(`users/${ user.uid }`,{
+					// displayName: user.displayName,
+					// photoURL: user.photoURL,
+					// email: user.email,
+					// lastTimeLoggedIn: firebase.database.ServerValue.TIMESTAMP
+				// });
+		// }});
+		console.log(this.props.auth)
 		console.log('check');
   }
 	
@@ -33,4 +46,5 @@ class App extends Component {
 
 
 
-export default connect()(App);
+export default compose(firebaseConnect(),connect((state) => ({
+auth: state.firebase.auth})))(App);

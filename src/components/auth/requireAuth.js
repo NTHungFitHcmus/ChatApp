@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from 'prop-types'
-import { firebaseConnect } from 'react-redux-firebase';
+import { firebaseConnect, isLoaded, isEmpty } from 'react-redux-firebase';
 import { compose } from 'redux';
 
 export default function(ComposedComponent) {
@@ -23,16 +23,21 @@ export default function(ComposedComponent) {
 		
     componentWillMount() {	
 			const {history} = this.props; 
-      if (this.props.auth === null) {
-        history.push("/");
-      }
+      !isLoaded(this.props.auth)
+			? console.log('loadingAuth')
+			: isEmpty(this.props.auth)
+					? history.push("/")
+					: console.log('Authed')
     }
 
     componentWillUpdate(nextProps) {	
 			const {history} = this.props; 
-      if (!nextProps.auth) {
-        history.push("/");
-      }
+      
+			!isLoaded(nextProps.auth)
+			? console.log('loadingAuth')
+			: isEmpty(nextProps.auth)
+					? history.push("/")
+					: console.log('Authed')
     }
 		// componentWillReceiveProps({ authExists }) {
 			// if (!authExists) {

@@ -1,4 +1,4 @@
-import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS} from '../actions/type';
+import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS, LOAD_USER} from '../actions/type';
 
 export default (state = {txt: ''}, action) => {
 	switch (action.type) {
@@ -30,6 +30,11 @@ export default (state = {txt: ''}, action) => {
 			return {
 				...state,
 				isSend: action.isSend
+			};
+		case LOAD_USER:
+			return {
+				...state,
+				loaded: action.loaded 
 			};
 		default:
 			return state;

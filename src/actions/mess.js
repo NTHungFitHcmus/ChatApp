@@ -1,4 +1,4 @@
-import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS} from './type';
+import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS, LOAD_USER} from './type';
 import {firebase} from '../firebase/firebase';
 
 export const doMess = (txt) => ({
@@ -46,4 +46,9 @@ export const addMess = (data) => ({
 	type: ADD_MESS,
 	uid: data.uid,
 	messPayload: data.messPayload
+});
+
+export const isLoad = (is) => ({
+	type: LOAD_USER,
+	loaded: is
 });
