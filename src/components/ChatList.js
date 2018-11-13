@@ -81,8 +81,12 @@ class ChatList extends Component {
 			},
 			[]
 		);
-  }
+  };
 	
+	checkURL(url) {
+    return(url.match(/\.(jpeg|jpg|gif|png|JPEG|JPG|GIF|PNG)/) != null);
+	};
+
 	render() {	
 		console.log(this.props.mess.uid);	
 		if (this.props.mess.uid){
@@ -95,7 +99,8 @@ class ChatList extends Component {
 			//if (listmess.length !== 0) {listmess = listmess[0].messPayload;}
 			console.log(this.showList(listmess[0]));
 			const showMess = this.showList(listmess[0]).map(mess => { 
-				//console.log(mess);
+				//console.log(checkURL(mess.message));
+				//const messageShow = checkURL(mess.message) ? <img src={`${mess.message}`}/> : mess.message
 				if (mess.uid === this.props.auth.uid)
 					return (
 					<li className='clearfix'>
@@ -104,7 +109,8 @@ class ChatList extends Component {
 							<span className='message-data-name' >{mess.displayName}</span> <i className='fa fa-circle me'></i>										
 						</div>
 						<div className='message other-message float-right'>
-							{mess.message}
+							{this.checkURL(mess.message) ? <a href={`${mess.message}`}>Link Imange</a> : mess.message}
+							{this.checkURL(mess.message) ? <img src={`${mess.message}`} width="300"/> : ''}
 						</div>
 					</li>
 					);
@@ -117,7 +123,8 @@ class ChatList extends Component {
 									<span className='message-data-time'></span>
 								</div>
 								<div className='message my-message'>
-									{mess.message}
+									{this.checkURL(mess.message) ? <a href={`${mess.message}`}>Link Imange</a> : mess.message}
+									{this.checkURL(mess.message) ? <img src={`${mess.message}`} width="300"/> : ''}
 								</div>
 							</li>
 						);

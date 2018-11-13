@@ -8,3 +8,4 @@ export const CHOOSE_USER = 'choose_user';
 export const SEND_MESS = 'send_mess';
 export const ADD_MESS = 'add_mess';
 export const LOAD_USER = 'load_user';
+export const CHANGE_SEARCH = 'change_search';

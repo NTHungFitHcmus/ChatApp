@@ -1,9 +1,14 @@
-import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS, LOAD_USER} from './type';
+import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS, LOAD_USER, CHANGE_SEARCH} from './type';
 import {firebase} from '../firebase/firebase';
 
 export const doMess = (txt) => ({
 	type: CHANGE_MESS,
 	txt: txt
+});
+
+export const doSearch = (txt) => ({
+	type: CHANGE_SEARCH,
+	txtSearch: txt
 });
 
 export const clearMess = () => ({
@@ -14,7 +19,8 @@ export const chooseUser = (data) => ({
 	type: CHOOSE_USER,
 	uid: data.uid,
 	avatar: data.avatar,
-	withUser: data.withUser
+	withUser: data.withUser,
+	starUser: data.starUser
 });
 
 export const sendMess = () => (dispatch, getState) => {

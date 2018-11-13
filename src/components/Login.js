@@ -23,12 +23,14 @@ class Login extends Component {
 	componentWillUpdate(nextProps) {
 		const {history} = this.props;
 		console.log('props');
-		!isLoaded(nextProps.auth)
-		? console.log('loadingAuth')
-		: isEmpty(nextProps.auth)
-			? console.log('noAuth')
-			: 				
+		if (!isLoaded(nextProps.auth))
+		 console.log('loadingAuth')
+		else if (isEmpty(nextProps.auth))
+			console.log('noAuth')
+			else {
+				this.props.firebase.update(`users/${nextProps.auth.uid}`, {logOut: false})
 				history.push("/dashboard");
+			}
 			
   }
 	

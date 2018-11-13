@@ -4,9 +4,10 @@ import {firebaseLogout, logout} from '../actions/auth';
 import firebase from 'firebase';
 import '../css/chat.css';
 import {addUser} from '../actions/user';
-import {doMess, clearMess, chooseUser, sendMess, addMess} from '../actions/mess';
+import {doMess, clearMess, chooseUser, sendMess, addMess, doSearch} from '../actions/mess';
 import ChatHeader from './ChatHeader';
 import ChatList from './ChatList';
+import UserList from './UserList';
 import { firebaseConnect, isLoaded, isEmpty, getVal } from 'react-redux-firebase';
 import { compose } from 'redux';
 
@@ -72,7 +73,9 @@ class Dashboard extends Component {
 	{
 		const {dispatch} = this.props;
 		console.log(this.props.auth);
-		this.props.firebase.logout()
+		this.props.firebase.logout();
+		const time = firebase.database.ServerValue.TIMESTAMP;
+		this.props.firebase.update(`users/${this.props.auth.uid}`, {logOut: true, timeOut: time})
 		//dispatch(firebaseLogout());
 		//dispatch(logout());
 		console.log('logout');
@@ -107,6 +110,11 @@ class Dashboard extends Component {
 		dispatch(doMess(e.target.value));
   };
 	
+	handleChangeSearch(e){
+		const {dispatch} = this.props;	  
+		dispatch(doSearch(e.target.value));
+  };
+	
 	handleChooseUser(uid) {
 		// const ref = firebase.database().ref(`users/${uid}`);
 		// ref.once("value")
@@ -123,14 +131,36 @@ class Dashboard extends Component {
 	};
 	
   render() {
-		const listUser = this.showList(this.props.user).map(user => { 
-			if ((user.uid !== this.props.auth.uid) && (user.uid !== 'undefined')) return (
+		const listUserTemp = this.showList(this.props.user).sort(function(a, b) {
+			const isOffA = a.logOut;
+			const isOffB = b.logOut;
+			if (isOffA === false && isOffB === true)	{
+				return -1;
+			}
+			if (isOffA === true && isOffB === false)	{
+				return 1;
+			}
+			
+			const nameA = a.displayName;
+			const nameB = b.displayName;
+			if (nameA < nameB) {
+				return -1;
+			}
+			if (nameA > nameB) {
+				return 1;
+			}
+			
+			return 0;
+		});
+		console.log(listUserTemp);
+		const listUser = listUserTemp.map(user => { 
+			if ((user.uid !== this.props.auth.uid) && (user.uid !== 'undefined') && (user.displayName.search(this.props.mess.txtSearch) >= 0)) return (
 				<li className='clearfix' key={user.uid} onClick = {this.handleChooseUser.bind(this, user.uid)}>
-					<img className='avatar' src={`${user.photoURL}`}/>
+					<img className='avatar' src={`${user.avatarUrl}`}/>
 					<div className='about'>
 						<div className='name'>{user.displayName}</div>
 						<div className='status'>
-							<i className='online'> online</i>
+							{user.logOut ? <i className='offline'> offline({new Date(user.timeOut).getHours()} : {new Date(user.timeOut).getMinutes()} / {new Date(user.timeOut).getDate()}-{new Date(user.timeOut).getMonth()}-{new Date(user.timeOut).getFullYear()})</i> : <i className='online'> online</i>}
 						</div>
 					</div>
 				</li>
@@ -151,12 +181,14 @@ class Dashboard extends Component {
 				
 				<div className='container clearfix'>
 					<div className='people-list'>
-						<ul className='list'>
-						{listUser} 
-						</ul>
+						<div className="search">
+							<input type="text" placeholder="search" onChange={this.handleChangeSearch.bind(this)} value={this.props.mess.txtSearch} />
+							<i className="fa fa-search"></i>
+						</div>
+						<UserList uidAuth={this.props.auth.uid} userList={this.props.user}/>
 					</div>
 					<div className='chat'>		
-						<ChatHeader withUid={this.props.mess.uid}/>
+						<ChatHeader withUid={this.props.mess.uid} listAllStar={this.props.mess.starUser}/>
 						<ChatList withId={this.props.mess.uid} uidAuth={this.props.auth.uid}/>  
 						<div className='chat-message clearfix'>
 							<textarea className='textareaMessage' name='message-to-send' id='message-to-send' placeholder ='Type your message' rows='3' onChange={this.handleChangeMess.bind(this)} value={this.props.mess.txt}></textarea>
@@ -173,7 +205,7 @@ class Dashboard extends Component {
 
 export default compose(
 		firebaseConnect([
-			{ type:'child_added', path: '/users' }
+			{ path: '/users' }
 		]),
 		connect((state) => ({
 			auth: state.firebase.auth,

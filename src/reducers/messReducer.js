@@ -1,4 +1,4 @@
-import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS, LOAD_USER} from '../actions/type';
+import {CHANGE_MESS, CLEAR_MESS, CHOOSE_USER, SEND_MESS, ADD_MESS, LOAD_USER, CHANGE_SEARCH} from '../actions/type';
 
 export default (state = {txt: ''}, action) => {
 	switch (action.type) {
@@ -17,7 +17,8 @@ export default (state = {txt: ''}, action) => {
 				...state,
 				uid: action.uid,
 				avatar: action.avatar,
-				withUser: action.withUser
+				withUser: action.withUser,
+				starUser: action.starUser
 			};
 		case ADD_MESS:
 			return {
@@ -35,6 +36,11 @@ export default (state = {txt: ''}, action) => {
 			return {
 				...state,
 				loaded: action.loaded 
+			};
+		case CHANGE_SEARCH:
+			return {
+				...state,
+				txtSearch: action.txtSearch
 			};
 		default:
 			return state;
